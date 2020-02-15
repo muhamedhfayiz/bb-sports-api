@@ -7,7 +7,6 @@ var path = require('path');
 var app = express();
 
 
-const register = require('./routes/register.js');
 const login = require('./routes/login.js');
 
 const category = require('./routes/category.js');
@@ -55,8 +54,6 @@ app.use(bodyparser.json());
 //static file
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/api', register);
 app.use('/api', login);
 
 app.use('/api', subCategory);

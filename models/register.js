@@ -18,14 +18,9 @@ const registerSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-
-	password: {
-		type: String,
-		required: true
-	},
 	otpVerified: {
 		type: Boolean,
-		required: true
+		required: false
 	}
 
 });

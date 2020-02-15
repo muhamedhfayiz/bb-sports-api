@@ -5,25 +5,51 @@ const Register = require('../models/register.js');
 
 //---------------------- login---------------------------------------------
 router.post('/login', (req, res) => {
-    login(req).then(data => {
+    phoneNumberExist(req).then(data => {
         if (data.length !== 0) {
-            if (bcrypt.compareSync(req.body.password, data[0].password)) {
-                data[0].password = null;
-                res.json({ code: 200, msg: "login succesfull", data: data[0] });
-            } else {
-                res.json({ code: 302, msg: "password not matching" });
-            }
+            res.json({ code: 200, msg: "login succesfull", data: data[0] });
         } else {
-            res.json({ code: 301, msg: "phone number not registered" });
+            res.json({ code: 303, msg: "phone number not exist" });
         }
     }).catch((err) => {
         res.json(err);
     });
 });
 
-async function login(req) {
+//---------------------- check phone number exist ---------------------------------------------
+router.post('/check-phonenumber-exist', (req, res) => {
+    phoneNumberExist(req).then(data => {
+        if (data.length !== 0) {
+            res.json({ code: 304, msg: "phone number exist" });
+        } else {
+            res.json({ code: 303, msg: "phone number not exist" });
+        }
+    });
+});
+
+
+//---------------------- register new user ---------------------------------------------
+router.post('/register', (req, res) => {
+    newRegister(req).then(data => {
+        res.json({ code: 304, msg: "registration successful", data: data });
+    });
+});
+
+async function phoneNumberExist(req) {
     let data = Register.find({ phoneNumber: req.body.phoneNumber });
     return data;
+}
+
+async function newRegister(req) {
+    let newUser = new Register({
+        role: req.body.role,
+        name: req.body.name,
+        phoneNumber: req.body.phoneNumber,
+        otpVerified: false
+    });
+
+    let saved = await newUser.save();
+    return (saved);
 }
 
 
