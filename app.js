@@ -13,6 +13,8 @@ const category = require('./routes/category.js');
 const subCategory = require('./routes/subCategory.js');
 const ads = require('./routes/ads.js');
 const featuredAds = require('./routes/featuredAds.js');
+const facility = require('./routes/facility');
+const stadium = require('./routes/stadium');
 
 //connect to mongodb
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://bbsports:bbsports1@ds249583.mlab.com:49583/bbsports', { useMongoClient: true });
@@ -30,7 +32,7 @@ mongoose.connection.on('error', (err) => {
 });
 //port number
 
-const port = process.env.PORT || 4200;
+const port = process.env.PORT || 4000;
 
 
 // const whitelist = ['http://localhost:4200', 'http://localhost:8100'];
@@ -58,7 +60,9 @@ app.use('/api', login);
 
 app.use('/api', subCategory);
 app.use('/api', ads);
-app.use('/api', featuredAds)
+app.use('/api', featuredAds);
+app.use('/api', facility);
+app.use('/api', stadium);
 
 
 //testing server
