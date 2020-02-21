@@ -2,47 +2,81 @@
 const express = require('express');
 const router = express.Router();
 const Stadium = require('../models/stadium.js');
+const NodeGeocoder = require('node-geocoder');
+const moment = require('moment');
+const GeoPoint = require('geopoint');
 
+
+var options = {
+    provider: 'google',
+    httpAdapter: 'https',
+    apiKey: 'AIzaSyALqmDEpru4ETRhPvAHNZXrMFvI0nOzNG4',
+    formatter: null
+};
+const geocoder = NodeGeocoder(options);
 
 
 //---------------------- add facility ---------------------------------------------
 router.post('/stadium', (req, res) => {
-    addStadium(req).then(data => {
-        res.json({ code: 200, msg: "added succesfully" });
-    }).catch((err) => {
-        res.json(err);
+    geocoder.reverse({ lat: parseFloat(req.body.location.lat), lon: parseFloat(req.body.location.lng) }).then((locate) => {
+        let place = locate[0].formattedAddress;
+
+        let openTime = moment(Date.parse(req.body.openTime)).format("HH:mm");
+        let closeTime = moment(Date.parse(req.body.closeTime)).format("HH:mm");
+
+        let newStadium = new Stadium({
+            stadiumName: req.body.stadiumName,
+            stadiumDescription: req.body.stadiumDescription,
+            openTime: openTime,
+            closeTime: closeTime,
+            amount: parseFloat(req.body.amount),
+            createdDate: new Date(),
+            createdBy: req.body.createdBy,
+            location: {
+                place: place,
+                lat: parseFloat(req.body.location.lat),
+                lng: parseFloat(req.body.location.lng)
+            },
+            facilities: []
+        });
+
+        for (let i = 0; i < req.body.facilities.length; i++) {
+            newStadium.facilities.unshift(req.body.facilities[i]);
+        }
+
+        newStadium.save().then(data => {
+            res.json({ code: 200, message: 'added succesfully', data: data });
+        }, err => {
+            res.json({ code: 400, message: 'error', data: err });
+        })
+    }, err => {
+        res.json({ code: 400, message: 'error', data: err });
     });
 });
 
 
-async function addStadium(req) {
-
-    let newStadium = new Stadium({
-        stadiumName: req.body.stadiumName,
-        stadiumDescription: req.body.stadiumDescription,
-        // openTime: req.body.openTime,
-        // closeTime: req.body.closeTime,
-        // amount: req.body.amount,
-        // createdDate: new Date.now(),
-        createdBy: req.body.createdBy,
-        location: req.body.location
-    });
-
-
-    // for (let i = 0; i < req.body.facilities.length; i++) {
-    //     newStadium.facilities.push(req.body.facilities[i]);
-    // }
-
-    let saved = await newStadium.save();
-
-    return (saved);
-}
 
 
 //----------------------  get facility ---------------------------------------------
 router.get('/stadium', (req, res) => {
+    var userLocation = new GeoPoint(parseFloat(req.query.lat), parseFloat(req.query.lng));
     Stadium.find(function (err, data) {
-        res.json(data);
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
+                var destLocation = new GeoPoint(parseFloat(data[i].location.lat), parseFloat(data[i].location.lng));
+                data[i].distance = userLocation.distanceTo(destLocation, true);
+            }
+
+            data.sort(function (a, b) {
+                var keyA = new Date(a.distance),
+                    keyB = new Date(b.distance);
+                if (keyA < keyB) return -1;
+                if (keyA > keyB) return 1;
+                return 0;
+            });
+            console.log(data);
+            res.json(data);
+        }
     });
 });
 

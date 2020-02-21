@@ -10,18 +10,23 @@ const stadiumSchema = mongoose.Schema({
     stadiumDescription: {
         type: String
     },
+    facilities: [],
     location: {
-        type: String
+        place: String,
+        lat: Number,
+        lng: Number
     },
     openTime: {
-        type: String
+        type: String,
+        required: true
     },
     closeTime: {
-        type: String
+        type: String,
+        required: true
     },
-
     amount: {
-        type: String
+        type: Number,
+        required: true
     },
     createdDate: {
         type: Date,
@@ -35,6 +40,7 @@ const stadiumSchema = mongoose.Schema({
     updatedBy: {
         type: String,
     },
+    distance: {}
 
 });
 
