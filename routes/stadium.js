@@ -59,7 +59,9 @@ router.post('/stadium', (req, res) => {
 
 //----------------------  get facility ---------------------------------------------
 router.get('/stadium', (req, res) => {
-    var userLocation = new GeoPoint(parseFloat(req.query.lat), parseFloat(req.query.lng));
+    let lat = req.query.lat ? req.query.lat : 23.5880;
+    let lng = req.query.lng ? req.query.lng : 58.3829;
+    var userLocation = new GeoPoint(parseFloat(lat), parseFloat(lng));
     Stadium.find(function (err, data) {
         if (data) {
             for (var i = 0; i < data.length; i++) {
@@ -74,10 +76,13 @@ router.get('/stadium', (req, res) => {
                 if (keyA > keyB) return 1;
                 return 0;
             });
-            console.log(data);
             res.json(data);
         }
     });
 });
+
+
+
+
 
 module.exports = router;

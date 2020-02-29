@@ -8,13 +8,12 @@ var app = express();
 
 
 const login = require('./routes/login.js');
-
-const category = require('./routes/category.js');
-const subCategory = require('./routes/subCategory.js');
-const ads = require('./routes/ads.js');
-const featuredAds = require('./routes/featuredAds.js');
 const facility = require('./routes/facility');
 const stadium = require('./routes/stadium');
+const booking = require('./routes/booking');
+const imageUpload = require('./routes/imageUpload');
+const promotion = require('./routes/promotion');
+const organize = require('./routes/organize');
 
 //connect to mongodb
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://bbsports:bbsports1@ds249583.mlab.com:49583/bbsports', { useMongoClient: true });
@@ -51,18 +50,19 @@ const port = process.env.PORT || 4000;
 app.use(cors({ origin: '*' }));
 
 //body-parser
-app.use(bodyparser.json());
+app.use(bodyparser.json({ limit: '50mb' }));
+app.use(bodyparser.urlencoded({ extended: true }));
 
 //static file
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', login);
-
-app.use('/api', subCategory);
-app.use('/api', ads);
-app.use('/api', featuredAds);
 app.use('/api', facility);
 app.use('/api', stadium);
+app.use('/api', booking);
+app.use('/api', imageUpload);
+app.use('/api', promotion);
+app.use('/api', organize);
 
 
 //testing server
