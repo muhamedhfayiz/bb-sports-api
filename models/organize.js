@@ -6,19 +6,23 @@ const organizeSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    eventName: {
+        type: String,
+        required: true
+    },
+    eventDate: {
+        type: String,
+        required: true
+    },
+    eventStartTime: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true
     },
-    date: {
-        type: String,
-        required: true
-    },
-    startTime: {
-        type: String,
-        required: true
-    },
-    endTime: {
+    eventEndTime: {
         type: String,
         required: true
     },
@@ -26,14 +30,14 @@ const organizeSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    requestedUsers: [
+    acceptedUser: [
         {
             userId: String,
             accept: false
         }
     ],
-    publicRequest: {
-        type: Boolean,
+    type: {
+        type: String,
         required: true
     }
 

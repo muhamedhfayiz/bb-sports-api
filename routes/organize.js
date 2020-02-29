@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Organize = require('../models/organize');
-
+const Register = require('../models/register');
 
 
 //---------------------- add facility ---------------------------------------------
@@ -18,13 +18,14 @@ router.post('/organize', (req, res) => {
 async function addOrganize(req) {
     let newOrganize = new Organize({
         organizerId: req.body.organizerId,
+        eventName: req.body.eventName,
         description: req.body.description,
-        date: req.body.date,
-        startTime: req.body.startTime,
-        endTime: req.body.endTime,
+        eventDate: req.body.eventDate,
+        eventStartTime: req.body.eventStartTime,
+        eventEndTime: req.body.eventEndTime,
         stadiumId: req.body.stadiumId,
         requestedUsers: req.body.requestedUsers,
-        publicRequest: req.body.publicRequest
+        type: req.body.type
     });
 
     let saved = await newOrganize.save();
@@ -34,10 +35,19 @@ async function addOrganize(req) {
 
 //----------------------  get facility ---------------------------------------------
 router.get('/organize', (req, res) => {
-    Organize.find(function (err, data) {
+    getUser().then(data => {
         res.json(data);
-    });
+    })
 });
 
+async function getUser() {
+    let result = await Organize.find();
+    for (let i = 0; i < result.length; i++) {
+        result[i].user = await Register.find({ _id: result[i].organizerId });
+    }
+    return result;
+}
+
 module.exports = router;
+
 
