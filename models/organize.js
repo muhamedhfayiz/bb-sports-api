@@ -32,8 +32,12 @@ const organizeSchema = mongoose.Schema({
     },
     acceptedUser: [
         {
-            userId: String,
-            accept: false
+            userId: String
+        }
+    ],
+    invitedUser: [
+        {
+            userId: String
         }
     ],
     type: {

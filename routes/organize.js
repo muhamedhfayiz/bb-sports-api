@@ -8,7 +8,7 @@ const Register = require('../models/register');
 //---------------------- add facility ---------------------------------------------
 router.post('/organize', (req, res) => {
     addOrganize(req).then(data => {
-        res.json({ code: 200, msg: "added succesfully" });
+        res.json({ code: 200, msg: "added succesfully", data: data });
     }).catch((err) => {
         res.json(err);
     });
@@ -24,7 +24,8 @@ async function addOrganize(req) {
         eventStartTime: req.body.eventStartTime,
         eventEndTime: req.body.eventEndTime,
         stadiumId: req.body.stadiumId,
-        requestedUsers: req.body.requestedUsers,
+        requestedUsers: [],
+        invitedUser: [],
         type: req.body.type
     });
 
@@ -47,6 +48,46 @@ async function getUser() {
     }
     return result;
 }
+
+
+// ------------------ organization by id ------------------------
+router.post('/eventById', (req, res) => {
+    Organize.find({ _id: req.body.id }).then(data => {
+        res.json(data[0]);
+    });
+});
+
+
+router.post('/joinPublicEvent', (req, res) => {
+    Organize.find({ _id: req.body.id }).then(data => {
+        let accesptedUser = {
+            userId: req.body.userId,
+        }
+        data[0].acceptedUser.unshift(accesptedUser);
+        data[0].save().then(responce => {
+            res.json(responce);
+        });
+    });
+});
+
+
+router.post('/inviteFriends', (req, res) => {
+    Register.find({ phoneNumber: req.body.phoneNumber }).then(data => {
+        if (data.length == 0) {
+            res.json({ code: 122, message: "no user found" })
+        } else {
+            Organize.find({ _id: req.body.eventId }).then(event => {
+                let invitedUser = {
+                    userId: data[0]._id
+                }
+                event[0].invitedUser.unshift(invitedUser);
+                event[0].save().then(responce => {
+                    res.json({ code: 200, data: responce });
+                });
+            });
+        }
+    });
+});
 
 module.exports = router;
 

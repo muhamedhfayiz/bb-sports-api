@@ -53,5 +53,24 @@ async function newRegister(req) {
 }
 
 
+// ------------------------- get array users by id ------------------------------
+router.post('/getUserArray', (req, res) => {
+    let arrayUser = [];
+    if (req.body.users.length == 0) {
+        res.json(arrayUser);
+    } else {
+        for (var i = 0; i < req.body.users.length; i++) {
+            Register.find({ _id: req.body.users[i].userId }).then(data => {
+                arrayUser.unshift(data[0]);
+                if (arrayUser.length === req.body.users.length) {
+                    res.json(arrayUser);
+                }
+            });
+        }
+    }
+});
+
+
+
 
 module.exports = router;
