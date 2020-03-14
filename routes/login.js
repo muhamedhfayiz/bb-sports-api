@@ -121,16 +121,17 @@ router.post('/getUserArray', (req, res) => {
 
 // ---------------- sent OTP -------------------
 router.post('/sentOTP', (req, res) => {
-    nexmo.verify.request({
-        number: req.body.phoneNumber,
-        brand: 'BB Sports',
-        code_length: '4'
-    }, (err, result) => {
-        if (err) {
-            res.json({ code: 400, message: err });
-        }
-        res.json({ code: 200, message: result });
-    });
+    res.json({ code: 200, message: result });
+    // nexmo.verify.request({
+    //     number: req.body.phoneNumber,
+    //     brand: 'BB Sports',
+    //     code_length: '4'
+    // }, (err, result) => {
+    //     if (err) {
+    //         res.json({ code: 400, message: err });
+    //     }
+    //     res.json({ code: 200, message: result });
+    // });
 });
 
 
