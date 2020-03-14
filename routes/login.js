@@ -121,38 +121,39 @@ router.post('/getUserArray', (req, res) => {
 
 // ---------------- sent OTP -------------------
 router.post('/sentOTP', (req, res) => {
-    nexmo.verify.request({
-        number: req.body.phoneNumber,
-        brand: 'BB Sports',
-        code_length: '4'
-    }, (err, result) => {
-        if (err) {
-            res.json({ code: 400, message: err });
-        }
-        res.json({ code: 200, message: result });
-    });
+    res.json({ code: 200, message: { request_id: '2222222', status: '0' } });
+    // nexmo.verify.request({
+    //     number: req.body.phoneNumber,
+    //     brand: 'BB Sports',
+    //     code_length: '4'
+    // }, (err, result) => {
+    //     if (err) {
+    //         res.json({ code: 400, message: err });
+    //     }
+    //     res.json({ code: 200, message: result });
+    // });
 });
 
 
 // ---------------- verify OTP -------------------
-router.post('/verifyOTP', (req, res) => {
-    nexmo.verify.check({
-        request_id: req.body.request_id,
-        code: req.body.code
-    }, (err, result) => {
-        if (err) {
-            res.json({ code: 400, message: err });
-        }
-        res.json({ code: 200, message: result });
-    });
-});
+// router.post('/verifyOTP', (req, res) => {
+//     nexmo.verify.check({
+//         request_id: req.body.request_id,
+//         code: req.body.code
+//     }, (err, result) => {
+//         if (err) {
+//             res.json({ code: 400, message: err });
+//         }
+//         res.json({ code: 200, message: result });
+//     });
+// });
 
 
 router.post('/verifyOTP', (req, res) => {
     if (req.body.code == '1234') {
-        res.json({ code: 200, message: result });
+        res.json({ code: 200, message: { status: '0' } });
     } else {
-        res.json({ code: 400, message: 'Invalid Otp' });
+        res.json({ code: 400, message: { status: '1' } });
     }
 });
 
