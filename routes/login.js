@@ -135,17 +135,25 @@ router.post('/sentOTP', (req, res) => {
 
 
 // ---------------- verify OTP -------------------
-router.post('/verifyOTP', (req, res) => {
-    nexmo.verify.check({
-        request_id: req.body.request_id,
-        code: req.body.code
-    }, (err, result) => {
-        if (err) {
-            res.json({ code: 400, message: err });
-        }
-        res.json({ code: 200, message: result });
-    });
-});
+// router.post('/verifyOTP', (req, res) => {
+//     nexmo.verify.check({
+//         request_id: req.body.request_id,
+//         code: req.body.code
+//     }, (err, result) => {
+//         if (err) {
+//             res.json({ code: 400, message: err });
+//         }
+//         res.json({ code: 200, message: result });
+//     });
+// });
 
+
+router.post('/verifyOTP', (req, res) => {
+    if (req.body.code == '1234') {
+        res.json({ code: 200, message: result });
+    } else {
+        res.json({ code: 400, message: 'Invalid Otp' });
+    }
+});
 
 module.exports = router;

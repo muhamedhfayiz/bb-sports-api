@@ -39,7 +39,6 @@ router.post('/history', (req, res) => {
 
 
 async function addHistory(req) {
-    console.log(req.body)
     let ids = [{ activityId: req.body.activityId }];
     let newHistory = new History({
         userId: req.body.userId,
