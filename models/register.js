@@ -21,7 +21,24 @@ const registerSchema = mongoose.Schema({
 	otpVerified: {
 		type: Boolean,
 		required: false
-	}
+	},
+	favoriteClub: {
+		type: String,
+		required: true
+	},
+	favoriteTeam: {
+		type: String,
+		required: true
+	},
+	age: {
+		type: String,
+		required: true
+	},
+	position: {
+		type: String,
+		required: true
+	},
+	favorites: []
 
 });
 

@@ -14,6 +14,7 @@ const booking = require('./routes/booking');
 const imageUpload = require('./routes/imageUpload');
 const promotion = require('./routes/promotion');
 const organize = require('./routes/organize');
+const history = require('./routes/history');
 
 //connect to mongodb
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://bbsports:bbsports1@ds249583.mlab.com:49583/bbsports', { useMongoClient: true });
@@ -63,6 +64,7 @@ app.use('/api', booking);
 app.use('/api', imageUpload);
 app.use('/api', promotion);
 app.use('/api', organize);
+app.use('/api', history);
 
 
 //testing server

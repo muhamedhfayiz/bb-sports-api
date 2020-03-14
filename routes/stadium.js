@@ -37,8 +37,12 @@ router.post('/stadium', (req, res) => {
                 lat: parseFloat(req.body.location.lat),
                 lng: parseFloat(req.body.location.lng)
             },
+            subscription: req.body.subscription,
+            subriptionAmount: req.body.subriptionAmount,
+            subriptionMonth: req.body.subriptionMonth,
             facilities: []
         });
+
 
         for (let i = 0; i < req.body.facilities.length; i++) {
             newStadium.facilities.unshift(req.body.facilities[i]);
@@ -63,6 +67,31 @@ router.get('/stadium', (req, res) => {
     let lng = req.query.lng ? req.query.lng : 58.3829;
     var userLocation = new GeoPoint(parseFloat(lat), parseFloat(lng));
     Stadium.find(function (err, data) {
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
+                var destLocation = new GeoPoint(parseFloat(data[i].location.lat), parseFloat(data[i].location.lng));
+                data[i].distance = userLocation.distanceTo(destLocation, true);
+            }
+
+            data.sort(function (a, b) {
+                var keyA = new Date(a.distance),
+                    keyB = new Date(b.distance);
+                if (keyA < keyB) return -1;
+                if (keyA > keyB) return 1;
+                return 0;
+            });
+            res.json(data);
+        }
+    });
+});
+
+
+//----------------------  get facility ---------------------------------------------
+router.get('/stadiumById', (req, res) => {
+    let lat = req.query.lat ? req.query.lat : 23.5880;
+    let lng = req.query.lng ? req.query.lng : 58.3829;
+    var userLocation = new GeoPoint(parseFloat(lat), parseFloat(lng));
+    Stadium.find({ _id: req.query.id }).then(data => {
         if (data) {
             for (var i = 0; i < data.length; i++) {
                 var destLocation = new GeoPoint(parseFloat(data[i].location.lat), parseFloat(data[i].location.lng));

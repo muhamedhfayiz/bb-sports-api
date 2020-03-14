@@ -40,7 +40,17 @@ const stadiumSchema = mongoose.Schema({
     updatedBy: {
         type: String,
     },
-    distance: {}
+    subscription: {
+        type: Boolean,
+    },
+    subriptionAmount: {
+        type: String,
+    },
+    subriptionMonth: {
+        type: String,
+    },
+    distance: {},
+
 
 });
 
