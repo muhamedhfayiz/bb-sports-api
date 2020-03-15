@@ -24,19 +24,19 @@ const registerSchema = mongoose.Schema({
 	},
 	favoriteClub: {
 		type: String,
-		required: true
+		required: false
 	},
 	favoriteTeam: {
 		type: String,
-		required: true
+		required: false
 	},
 	age: {
 		type: String,
-		required: true
+		required: false
 	},
 	position: {
 		type: String,
-		required: true
+		required: false
 	},
 	favorites: []
 

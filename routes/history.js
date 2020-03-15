@@ -7,13 +7,17 @@ const Organize = require('../models/organize');
 router.get('/history', (req, res) => {
     let datas = [];
     History.find({ userId: req.query.userId }, function (err, data) {
-        for (let i = 0; i < data[0].history.length; i++) {
-            Organize.find({ _id: data[0].history[i].activityId }).then(org => {
-                datas.unshift(org[0]);
-                if (datas.length === data[0].history.length) {
-                    res.json({ code: 200, data: datas });
-                }
-            });
+        if (data.length !== 0) {
+            for (let i = 0; i < data[0].history.length; i++) {
+                Organize.find({ _id: data[0].history[i].activityId }).then(org => {
+                    datas.unshift(org[0]);
+                    if (datas.length === data[0].history.length) {
+                        res.json({ code: 200, data: datas });
+                    }
+                });
+            }
+        } else {
+            res.json({ code: 200, data: datas });
         }
     });
 });

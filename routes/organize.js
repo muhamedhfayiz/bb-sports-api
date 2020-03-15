@@ -91,6 +91,25 @@ router.post('/inviteFriends', (req, res) => {
 
 
 
+// ------------------ add comments organization ------------------------
+router.post('/addEventComments', (req, res) => {
+    Organize.find({ _id: req.body.id }).then(data => {
+        let comment = {
+            username: req.body.username,
+            userImage: req.body.userImage,
+            comments: req.body.comments,
+            commentImage: req.body.commentImage
+        }
+        data[0].comments.unshift(comment);
+        data[0].save().then(event => {
+            res.json({ code: 200, data: event });
+        })
+    });
+});
+
+
+
+
 module.exports = router;
 
 

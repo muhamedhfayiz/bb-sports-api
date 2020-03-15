@@ -43,7 +43,15 @@ const organizeSchema = mongoose.Schema({
     type: {
         type: String,
         required: true
-    }
+    },
+    comments: [
+        {
+            username: String,
+            userImage: String,
+            comments: String,
+            commentImage: String
+        }
+    ]
 
 });
 
