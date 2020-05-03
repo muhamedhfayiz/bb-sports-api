@@ -50,6 +50,12 @@ const stadiumSchema = mongoose.Schema({
         type: String,
     },
     distance: {},
+    paymentOption: {
+        type: String,
+    },
+    tax: {
+        type: String
+    }
 
 
 });

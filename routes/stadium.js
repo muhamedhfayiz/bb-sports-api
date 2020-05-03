@@ -40,7 +40,9 @@ router.post('/stadium', (req, res) => {
             subscription: req.body.subscription,
             subriptionAmount: req.body.subriptionAmount,
             subriptionMonth: req.body.subriptionMonth,
-            facilities: []
+            facilities: [],
+            paymentOption: req.body.paymentOption,
+            tax: req.body.tax
         });
 
 
