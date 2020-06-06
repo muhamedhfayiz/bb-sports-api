@@ -33,7 +33,6 @@ router.post('/upload-image', (req, res) => {
 
     //Uploading files to the bucket
     s3.upload(params, (err, data) => {
-
         if (err) {
             res.json({ msg: 'error' + err, code: 401 });
         }
