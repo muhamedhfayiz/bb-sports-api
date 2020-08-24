@@ -4,9 +4,6 @@ const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
 
-
-
-
 function encryptData(data) {
     let absolutePath = path.resolve('./publicKey');
     let publicKey = fs.readFileSync(absolutePath, "utf8");
@@ -14,20 +11,6 @@ function encryptData(data) {
     var encrypted = crypto.publicEncrypt(publicKey, buffer);
     return encrypted.toString("base64");
 }
-
-
-var d = new Date();
-var n = d.getUTCDate();
-
-console.log(n);
-
-
-let a = encryptData("d");
-console.log(a.toString());
-
-
-
-
 
 let merchant_reference_temp = '123213131441341';
 let amount_temp = '1.000';
